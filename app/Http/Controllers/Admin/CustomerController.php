@@ -9,8 +9,10 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserLogHistory;
 use Brian2694\Toastr\Facades\Toastr;
+use http\Env;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Stevebauman\Location\Facades\Location;
 
 class CustomerController extends Controller
 {
@@ -24,9 +26,11 @@ class CustomerController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin-views.customer.index');
+        $ip = env('APP_MODE') == 'live' ? $request->ip() : '61.247.180.82';
+        $current_user_info = Location::get($ip);
+        return view('admin-views.customer.index', compact('current_user_info'));
     }
 
     public function store(Request $request)
@@ -35,7 +39,7 @@ class CustomerController extends Controller
             'f_name' => 'required',
             'l_name' => 'required',
             'image' => 'required',
-            'email' => '',
+            'country_code' => 'required',
             'phone' => 'required|unique:users|min:5|max:20',
             'gender' => 'required',
             'occupation' => 'required',
@@ -45,17 +49,25 @@ class CustomerController extends Controller
             'password.max' => 'Password must contain 4 characters',
         ]);
 
-        DB::transaction(function () use ($request) {
+        $phone = $request->country_code . $request->phone;
+        $customer = User::where(['phone' => $phone])->first();
+        if (isset($customer)){
+            Toastr::warning(translate('This phone number is already taken'));
+            return back();
+        }
+
+        DB::transaction(function () use ($request, $phone) {
             $user = new User();
             $user->f_name = $request->f_name;
             $user->l_name = $request->l_name;
             $user->image = Helpers::upload('customer/', 'png', $request->file('image'));
             $user->email = $request->email;
-            $user->phone = $request->phone;
+            $user->dial_country_code = $request->country_code;
+            $user->phone = $phone;
             $user->gender = $request->gender;
             $user->occupation = $request->occupation;
             $user->password = bcrypt($request->password);
-            $user->type = 2;    //['Admin'=>0, 'Agent'=>1, 'Customer'=>2]
+            $user->type = CUSTOMER_TYPE;    //['Admin'=>0, 'Agent'=>1, 'Customer'=>2]
             $user->referral_id = $request->referral_id ?? null;
             $user->save();
 

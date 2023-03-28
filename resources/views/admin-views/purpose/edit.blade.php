@@ -25,7 +25,7 @@
                       enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-sm-6">
                             <div class="form-group lang_form">
                                 <label class="input-label"
                                        for="exampleFormControlInput1">{{ translate('name') }}</label>
@@ -33,7 +33,7 @@
                                        placeholder="{{translate('New Title')}}" required>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-sm-6">
                             <div class="form-group lang_form">
                                 <label class="input-label"
                                        for="exampleFormControlInput1">{{ translate('color') }}<small

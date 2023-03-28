@@ -9,9 +9,7 @@ class EMoney extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-    ];
+    protected $guarded = [];
 
     public function user()
     {
@@ -22,6 +20,7 @@ class EMoney extends Model
         'user_id' => 'integer',
         'current_balance' => 'float:4',
         'charge_earned' => 'float:4',
+        'pending_balance' => 'float:4',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

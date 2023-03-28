@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\TransferController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WithdrawalController;
 use App\Http\Controllers\Admin\WithdrawController;
+use App\Http\Controllers\Admin\MerchantController;
 use App\Http\Controllers\PurposeController;
 use Illuminate\Support\Facades\Route;
 
@@ -87,6 +88,13 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             });
         });
 
+        Route::group(['prefix' => 'merchant-config', 'as' => 'merchant-config.'], function () {
+            Route::get('merchant-payment-otp', [BusinessSettingsController::class, 'merchant_payment_otp_index'])->name('merchant-payment-otp');
+            Route::post('merchant-payment-otp-verification-update', [BusinessSettingsController::class, 'merchant_payment_otp_update'])->name('merchant-payment-otp-verification-update');
+            Route::get('settings', [BusinessSettingsController::class, 'merchant_settings_index'])->name('settings');
+            Route::post('settings-update', [BusinessSettingsController::class, 'merchant_settings_update'])->name('settings-update');
+        });
+
         //linked-website
         Route::get('linked-website', [BusinessSettingsController::class, 'linked_website'])->name('linked-website');
         Route::post('linked-website', [BusinessSettingsController::class, 'linked_website_add']);
@@ -156,7 +164,20 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('kyc-status-update/{id}/{status}', [AgentController::class, 'update_kyc_status'])->name('kyc_status_update');
         });
 
-        //agent
+        //merchant
+        Route::group(['prefix' => 'merchant', 'as' => 'merchant.'], function () {
+            Route::get('add', [MerchantController::class, 'index'])->name('add');
+            Route::post('store', [MerchantController::class, 'store'])->name('store');
+            Route::get('list', [MerchantController::class, 'list'])->name('list');
+            Route::get('view/{user_id}', [MerchantController::class, 'view'])->name('view');
+            Route::get('transaction/{user_id}', [MerchantController::class, 'transaction'])->name('transaction');
+            Route::get('edit/{id}', [MerchantController::class, 'edit'])->name('edit');
+            Route::post('update/{id}', [MerchantController::class, 'update'])->name('update');
+            Route::post('search', [MerchantController::class, 'search'])->name('search');
+            Route::get('status/{id}', [MerchantController::class, 'status'])->name('status');
+
+        });
+
         Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
             Route::get('log', [UserController::class, 'log'])->name('log');
         });
@@ -214,8 +235,8 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
         });
 
-
     });
 
-
 });
+
+

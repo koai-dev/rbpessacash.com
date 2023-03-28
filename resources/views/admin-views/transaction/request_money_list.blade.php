@@ -21,7 +21,7 @@
         <div class="row gx-2 gx-lg-3">
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <div class="card">
-                    <div class="card-header flex-between">
+                    <div class="card-header flex-between __wrap-gap-10">
                         <div class="flex-start">
                             <h5 class="card-header-title">{{translate('transaction Table')}}</h5>
                             <h5 class="card-header-title text-primary mx-1">({{ $request_money->total() }})</h5>

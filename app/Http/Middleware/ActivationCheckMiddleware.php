@@ -3,10 +3,13 @@
 namespace App\Http\Middleware;
 
 use App\CentralLogics\Helpers;
+use App\Traits\ActivationClass;
 use Closure;
+use Illuminate\Support\Facades\Redirect;
 
 class ActivationCheckMiddleware
 {
+    use ActivationClass;
     /**
      * Handle an incoming request.
      *
@@ -16,10 +19,13 @@ class ActivationCheckMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $data = Helpers::requestSender();
-        if ($data['active']) {
-            return $next($request);
+        if ($request->is('admin/auth/login')) {
+            $response = $this->actch();
+            $data = json_decode($response->getContent(), true);
+            if (!$data['active']) {
+                return Redirect::away(base64_decode('aHR0cHM6Ly82YW10ZWNoLmNvbS9zb2Z0d2FyZS1hY3RpdmF0aW9u'))->send();
+            }
         }
-        return redirect(base64_decode('aHR0cHM6Ly82YW10ZWNoLmNvbS9zb2Z0d2FyZS1hY3RpdmF0aW9u'));
+        return $next($request);
     }
 }

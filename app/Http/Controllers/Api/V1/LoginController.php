@@ -16,6 +16,7 @@ class LoginController extends Controller
     public function customer_login(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'dial_country_code' => 'required|string',
             'phone' => 'required|string',
             'password' => 'required|string',
         ]);
@@ -24,7 +25,10 @@ class LoginController extends Controller
             return response()->json(response_formatter(DEFAULT_400, null, Helpers::error_processor($validator)), 400);
         }
 
-        $user = User::customer()->where('phone', $request->phone)->first();
+        $phone = $request->dial_country_code . $request->phone;
+
+        $user = User::customer()->where('phone', $phone)->first();
+
 
         //availability check
         if (!isset($user)) {
@@ -57,6 +61,7 @@ class LoginController extends Controller
     public function agent_login(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'dial_country_code' => 'required|string',
             'phone' => 'required|string',
             'password' => 'required|string',
         ]);
@@ -64,8 +69,11 @@ class LoginController extends Controller
         if ($validator->fails()) {
             return response()->json(response_formatter(DEFAULT_400, null, Helpers::error_processor($validator)), 400);
         }
+        $phone = $request->dial_country_code . $request->phone;
+       // dd($phone);
 
-        $user = User::agent()->where('phone', $request->phone)->first();
+        $user = User::agent()->where('phone', $phone)->first();
+
 
         //availability check
         if (!isset($user)) {

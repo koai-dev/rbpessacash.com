@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CentralLogics\Helpers;
+use App\Traits\ActivationClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\URL;
 
 class InstallController extends Controller
 {
+    use ActivationClass;
+
     public function step0()
     {
         return view('installation.step0');
@@ -48,7 +51,17 @@ class InstallController extends Controller
         Helpers::setEnvironmentValue('SOFTWARE_ID', 'MzczNTQxNDc=');
         Helpers::setEnvironmentValue('BUYER_USERNAME', $request['username']);
         Helpers::setEnvironmentValue('PURCHASE_CODE', $request['purchase_key']);
-        return redirect()->route('dmvf', ['purchase_key' => $request['purchase_key'], 'username' => $request['username']]);
+
+        $post = [
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'username' => $request['username'],
+            'purchase_key' => $request['purchase_key'],
+            'domain' => preg_replace("#^[^:/.]*[:/]+#i", "", url('/')),
+        ];
+        $response = $this->dmvf($post);
+
+        return redirect($response . '?token=' . bcrypt('step_3'));
     }
 
     public function system_settings(Request $request)
@@ -127,7 +140,7 @@ class InstallController extends Controller
                     BUYER_USERNAME=' . session('username') . '
                     SOFTWARE_ID=MzczNTQxNDc=
 
-                    SOFTWARE_VERSION=2.0
+                    SOFTWARE_VERSION=3.0
                     ';
             $file = fopen(base_path('.env'), 'w');
             fwrite($file, $output);
@@ -173,7 +186,6 @@ class InstallController extends Controller
 
     function check_database_connection($db_host = "", $db_name = "", $db_user = "", $db_pass = "")
     {
-
         if (@mysqli_connect($db_host, $db_user, $db_pass, $db_name)) {
             return true;
         } else {

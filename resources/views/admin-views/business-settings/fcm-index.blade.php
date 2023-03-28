@@ -261,6 +261,29 @@
                                     </div>
                                 </div>
 
+                                @php($data = \App\CentralLogics\Helpers::get_business_settings(PAYMENT))
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label class="toggle-switch d-flex align-items-center mb-3"
+                                               for="payment_money_status">
+                                            <input type="checkbox" name="payment_money_status"
+                                                   class="toggle-switch-input"
+                                                   value="1"
+                                                   id="payment_money_status" {{$data?($data['status']==1?'checked':''):''}}>
+                                            <span class="toggle-switch-label">
+                                                <span class="toggle-switch-indicator"></span>
+                                              </span>
+                                            <span class="toggle-switch-content">
+                                                <span
+                                                    class="d-block">{{translate('Add Payment Message')}}</span>
+                                              </span>
+                                        </label>
+
+                                        <textarea name="payment_money_message"
+                                                  class="form-control">{{$data['message']??''}}</textarea>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <button type="submit"

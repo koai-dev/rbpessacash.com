@@ -21,9 +21,11 @@ class TransactionController extends Controller
 {
     public function index(Request $request)
     {
-        $query_param = [];
+//      dd($request);
+        $trx_type = $request->has('trx_type') ? $request['trx_type'] : 'all';
         $search = $request['search'];
-        if ($request->has('search')) {
+        $query_param = [];
+        /*if ($request->has('search')) {
             $key = explode(' ', $request['search']);
 
             $users = User::where(function ($q) use ($key) {
@@ -44,13 +46,45 @@ class TransactionController extends Controller
                         ->orWhere('transaction_type', 'like', "%{$value}%");
                 }
             });
-            $query_param = ['search' => $request['search']];
+            $query_param = ['search' => $search, 'trx_type' => $trx_type];
         } else {
             $transactions = new Transaction();
-        }
+        }*/
+
+        $key = explode(' ', $request['search']);
+
+        $users = User::where(function ($q) use ($key) {
+            foreach ($key as $value) {
+                $q->orWhere('id', 'like', "%{$value}%")
+                    ->orWhere('phone', 'like', "%{$value}%")
+                    ->orWhere('f_name', 'like', "%{$value}%")
+                    ->orWhere('l_name', 'like', "%{$value}%")
+                    ->orWhere('email', 'like', "%{$value}%");
+            }
+        })->get()->pluck('id')->toArray();
+
+        $transactions = Transaction::
+            when($request->has('search'), function ($q) use ($key, $users) {
+                foreach ($key as $value) {
+                    $q->orWhereIn('from_user_id', $users)
+                        ->orWhereIn('to_user_id', $users)
+                        ->orWhere('transaction_id', 'like', "%{$value}%")
+                        ->orWhere('transaction_type', 'like', "%{$value}%");
+                }
+            })
+            ->when($request['trx_type'] != 'all', function ($query) use ($request) {
+                if ($request['trx_type'] == 'debit') {
+                    return $query->where('debit', '!=', 0);
+                } else {
+                    return $query->where('credit', '!=', 0);
+                }
+            });
+
+        $query_param = ['search' => $search, 'trx_type' => $trx_type];
+//        dd($query_param);
 
         $transactions = $transactions->latest()->paginate(Helpers::pagination_limit())->appends($query_param);
-        return view('admin-views.transaction.index', compact('transactions', 'search'));
+        return view('admin-views.transaction.index', compact('transactions', 'search',  'trx_type'));
     }
 
     public function request_money(Request $request)

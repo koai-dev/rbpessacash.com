@@ -28,41 +28,7 @@
             <!-- Nav Scroller -->
             <div class="js-nav-scroller hs-nav-scroller-horizontal">
                 <!-- Nav -->
-                <ul class="nav nav-tabs page-header-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active"
-                           @if(isset($user) && $user->type == 1)
-                           href="{{route('admin.agent.view',[$user['id']])}}"
-                           @elseif(isset($user) && $user->type == 2)
-                           href="{{route('admin.customer.view',[$user['id']])}}"
-                           @else
-                           href="#"
-                            @endif
-                        >{{translate('details')}}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           @if(isset($user) && $user->type == 1)
-                           href="{{route('admin.agent.transaction',[$user['id']])}}"
-                           @elseif(isset($user) && $user->type == 2)
-                           href="{{route('admin.customer.transaction',[$user['id']])}}"
-                           @else
-                           href="#"
-                            @endif
-                        >{{translate('Transactions')}}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           @if(isset($user) && $user->type == 1)
-                           href="{{route('admin.agent.log',[$user['id']])}}"
-                           @elseif(isset($user) && $user->type == 2)
-                           href="{{route('admin.customer.log',[$user['id']])}}"
-                           @else
-                           href="#"
-                            @endif
-                        >{{translate('Logs')}}</a>
-                    </li>
-                </ul>
+                @include('admin-views.view.partails.navbar')
                 <!-- End Nav -->
             </div>
             <!-- End Nav Scroller -->
@@ -70,8 +36,8 @@
         <!-- End Page Header -->
 
 
-        <div class="row my-3">
-            <div class="col-6">
+        <div class="row mt-4">
+            <div class="col-md-6 mb-3">
                 <div class="card">
                     <div class="card-header text-capitalize">{{translate('wallet')}}<i style="font-size: 25px" class="tio-wallet"></i></div>
                     <div class="card-body">
@@ -96,12 +62,12 @@
                 </div>
             </div>
 
-            <div class="col-6">
-                <div class="card">
+            <div class="col-md-6 mb-3">
+                <div class="card word-break">
                     <div class="card-header text-capitalize">{{translate('Personal Info')}}<i style="font-size: 25px" class="tio-info"></i></div>
-                    <div class="card-body">
-                        <div class="card-body"
-                             style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">
+                    <div class="card-body"
+                            style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};">
+                        <div class="p-lg-4">
                             <div class="flex-start">
                                 <div><h5>{{translate('name')}} : </h5></div>
                                 <div class="mx-1"><span class="text-dark">{{$user['f_name']??''}} {{$user['l_name']??''}}</span></div>
@@ -127,6 +93,38 @@
                                     <div><h5>{{translate('identification_number')}} : </h5></div>
                                     <div class="mx-1"><span class="text-dark">{{$user['identification_number']}}</span></div>
                                 </div>
+                            @endif
+                            @if($user['type'] == 3)
+                                @if(isset($user->merchant))
+                                    <div class="flex-start">
+                                        <div><h5>{{translate('store_name')}} : </h5></div>
+                                        <div class="mx-1"><span class="text-dark">{{$user->merchant['store_name']}}</span></div>
+                                    </div>
+                                    <div class="flex-start">
+                                        <div><h5>{{translate('store_callback')}} : </h5></div>
+                                        <div class="mx-1"><span class="text-dark">{{$user->merchant['callback']}}</span></div>
+                                    </div>
+                                    <div class="flex-start">
+                                        <div><h5>{{translate('address')}} : </h5></div>
+                                        <div class="mx-1"><span class="text-dark">{{$user->merchant['address']}}</span></div>
+                                    </div>
+                                    <div class="flex-start">
+                                        <div><h5>{{translate('BIN')}} : </h5></div>
+                                        <div class="mx-1"><span class="text-dark">{{$user->merchant['bin']}}</span></div>
+                                    </div>
+                                    <div class="flex-start">
+                                        <div><h5>{{translate('public_key')}} : </h5></div>
+                                        <div class="mx-1"><span class="text-dark">{{$user->merchant['public_key']}}</span></div>
+                                    </div>
+                                    <div class="flex-start">
+                                        <div><h5>{{translate('secret_key')}} : </h5></div>
+                                        <div class="mx-1"><span class="text-dark">{{$user->merchant['secret_key']}}</span></div>
+                                    </div>
+                                    <div class="flex-start">
+                                        <div><h5>{{translate('merchant_number')}} : </h5></div>
+                                        <div class="mx-1"><span class="text-dark">{{$user->merchant['merchant_number']}}</span></div>
+                                    </div>
+                                @endif
                             @endif
                         </div>
                     </div>

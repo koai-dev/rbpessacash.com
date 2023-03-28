@@ -27,7 +27,7 @@ class ConfigController extends Controller
             'company_name' => Helpers::get_business_settings('business_name'),
             'company_logo' => Helpers::get_business_settings('logo'),
             'company_address' => Helpers::get_business_settings('address'),
-            'company_phone' => Helpers::get_business_settings('phone'),
+            'company_phone' => (string)Helpers::get_business_settings('phone'),
             'company_email' => Helpers::get_business_settings('email'),
             'base_urls' => [
                 'customer_image_url' => asset('storage/app/public/customer'),

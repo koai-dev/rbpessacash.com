@@ -76,5 +76,6 @@ class Kernel extends HttpKernel
         'actch' => ActivationCheckMiddleware::class,
         'deviceVerify' => DeviceVerifyMiddleware::class,
         'checkDeviceId' => CheckDeviceId::class,
+        'merchant' => \App\Http\Middleware\MerchantMiddleware::class,
     ];
 }

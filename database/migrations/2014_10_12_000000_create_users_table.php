@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('image')->nullable();
-            $table->boolean('type')->comment("['Admin'=>0, 'Agent'=>1, 'Customer'=>2]");
+            $table->boolean('type')->comment("['Admin'=>0, 'Agent'=>1, 'Customer'=>2, 'Merchant'=>3]");
             $table->boolean('role')->nullable();
             $table->string('password');
             $table->boolean('is_phone_verified')->default(0);

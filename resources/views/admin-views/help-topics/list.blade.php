@@ -82,20 +82,20 @@
 
 @section('content')
     <div class="content container-fluid">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">{{translate('Dashboard')}}</a>
-                </li>
-                <li class="breadcrumb-item"
-                    aria-current="page">{{translate('help_topic')}}</li>
-            </ol>
-        </nav>
+
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-sm mb-2 mb-sm-0">
+                    <h1 class="page-header-title"><i class="tio-bookmark-outlined nav-icon"></i> {{translate('FAQ')}}</h1>
+                </div>
+            </div>
+        </div>
 
         <div class="row" style="margin-top: 20px">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>{{translate('help_topic')}} {{translate('Table')}} </h5>
+                        <h5>{{translate('FAQ')}} {{translate('Table')}} </h5>
                         <button class="btn btn-primary btn-icon-split for-addFaq" data-toggle="modal"
                                 data-target="#addModal">
                             <i class="tio-add-circle"></i>

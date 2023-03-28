@@ -10,6 +10,7 @@
             border: 2px solid #00000012;
             border-radius: 10px;
             padding: 10px;
+            position: relative;
         }
 
         .label_1 {
@@ -17,11 +18,14 @@
             font-size: 10px;
             background: #FF4C29;
             color: #ffffff;
-            width: 146px;
+            width: calc(100% - 20px);
+            max-width: 146px;
             padding: 2px;
             font-weight: bold;
             border-radius: 6px;
             text-align: center;
+            left: 50%;
+            transform: translateX(-50%)
         }
 
         .center-div {
@@ -170,10 +174,15 @@
                                 'rgba(153, 102, 255, 1)',
                                 'rgba(255, 159, 64, 1)'
                             ],
-                            borderWidth: 1
+                            borderWidth: 1,
                         }]
                     },
                     options: {
+                        plugins: {
+                            datalabels: {
+                                display: false,
+                            },
+                        },
                         responsive: false,
                         scales: {
                             xAxes: [{

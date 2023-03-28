@@ -71,6 +71,9 @@ class BusinessSettingsController extends Controller
         DB::table('business_settings')->updateOrInsert(['key' => 'phone'], [
             'value' => $request['phone']
         ]);
+        DB::table('business_settings')->updateOrInsert(['key' => 'hotline_number'], [
+            'value' => $request['hotline_number']
+        ]);
 
         DB::table('business_settings')->updateOrInsert(['key' => 'email'], [
             'value' => $request['email']
@@ -452,6 +455,12 @@ class BusinessSettingsController extends Controller
                 'message' => $request['received_money_message']
             ])
         ]);
+        DB::table('business_settings')->updateOrInsert(['key' => PAYMENT], [
+            'value' => json_encode([
+                'status' => $request['payment_money_status'] == 1 ? 1 : 0,
+                'message' => $request['payment_money_message']
+            ])
+        ]);
 
         Toastr::success(translate('message_updated'));
         return back();
@@ -629,6 +638,36 @@ class BusinessSettingsController extends Controller
         ]);
 
         Toastr::success('App theme Updated Successfully');
+        return back();
+    }
+
+    public function merchant_payment_otp_index(Request $request)
+    {
+        return view('admin-views.business-settings.merchant-payment-otp-index');
+    }
+
+    public function merchant_payment_otp_update(Request $request)
+    {
+        DB::table('business_settings')->updateOrInsert(['key' => 'payment_otp_verification'], [
+            'value' => $request['payment_otp_verification']
+        ]);
+
+        Toastr::success('Updated Successfully');
+        return back();
+    }
+
+    public function merchant_settings_index(Request $request)
+    {
+        return view('admin-views.business-settings.merchant-settings-index');
+    }
+
+    public function merchant_settings_update(Request $request)
+    {
+        DB::table('business_settings')->updateOrInsert(['key' => 'merchant_commission_percent'], [
+            'value' => $request['merchant_commission_percent']
+        ]);
+
+        Toastr::success('Settings updated');
         return back();
     }
 

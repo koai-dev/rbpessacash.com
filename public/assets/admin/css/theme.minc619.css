@@ -4529,10 +4529,10 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     padding-left: 0
 }
 
-.navbar-nav .dropdown-menu {
+/* .navbar-nav .dropdown-menu {
     position: static;
     float: none
-}
+} */
 
 .navbar-text {
     display: inline-block;

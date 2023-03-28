@@ -28,7 +28,7 @@
         <!-- Card -->
         <div class="card">
             <!-- Header -->
-            <div class="card-header">
+            <div class="card-header __wrap-gap-10">
                 <div class="flex-start">
                     <h5 class="card-header-title">{{translate('Verification requests list')}}</h5>
                     <h5 class="card-header-title text-primary mx-1">({{ $customers->total() }})</h5>
@@ -121,6 +121,10 @@
                                 </div>
                             </td>
                             <td>
+                                <a class="btn btn-primary p-1 m-1"
+                                   href="{{route('admin.customer.view',[$customer['id']])}}">
+                                    <i class="fa fa-eye pl-1" aria-hidden="true"></i>
+                                </a>
                                 @if($customer['is_kyc_verified'] == 0)
                                     <a class="btn-sm btn-success mr-1"
                                        href="{{route('admin.customer.kyc_status_update',[$customer['id'], 1])}}">
@@ -133,6 +137,7 @@
                                 @elseif($customer['is_kyc_verified'] == 2)
                                     <span class="badge badge-danger"> {{translate('Denied')}}</span>
                                 @endif
+
                             </td>
                         </tr>
                     @endforeach

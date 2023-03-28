@@ -10,6 +10,7 @@ use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Stevebauman\Location\Facades\Location;
 
 class AgentController extends Controller
 {
@@ -20,10 +21,11 @@ class AgentController extends Controller
         $this->user = $user;
     }
 
-
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin-views.agent.index');
+        $ip = env('APP_MODE') == 'live' ? $request->ip() : '61.247.180.82';
+        $current_user_info = Location::get($ip);
+        return view('admin-views.agent.index', compact('current_user_info'));
     }
 
     public function list(Request $request)
@@ -73,26 +75,35 @@ class AgentController extends Controller
             'l_name' => 'required',
             'image' => 'required',
             'email' => '',
-            'phone' => 'required|unique:users|min:5|max:20',
+            'phone' => 'required|unique:users|min:8|max:20',
+            'country_code' => 'required',
             'gender' => 'required',
             'occupation' => 'required',
             'password' => 'required|min:4|max:4',
         ],[
-            'password.min'    => 'Password must contain 4 characters',
-            'password.max'    => 'Password must contain 4 characters',
+            'password.min' => translate('Password must contain 4 characters'),
+            'password.max' => translate('Password must contain 4 characters'),
         ]);
 
-        DB::transaction(function () use ($request) {
+        $phone = $request->country_code . $request->phone;
+        $agent = User::where(['phone' => $phone])->first();
+        if (isset($agent)){
+            Toastr::warning(translate('This phone number is already taken'));
+            return back();
+        }
+
+        DB::transaction(function () use ($request, $phone) {
             $user = new User();
             $user->f_name = $request->f_name;
             $user->l_name = $request->l_name;
             $user->image = Helpers::upload('agent/', 'png', $request->file('image'));
             $user->email = $request->email;
-            $user->phone = $request->phone;
+            $user->dial_country_code = $request->country_code;
+            $user->phone = $phone;
             $user->gender = $request->gender;
             $user->occupation = $request->occupation;
             $user->password = bcrypt($request->password);
-            $user->type = 1;    //['Admin'=>0, 'Agent'=>1, 'Customer'=>2]
+            $user->type = AGENT_TYPE;    //['Admin'=>0, 'Agent'=>1, 'Customer'=>2]
             $user->referral_id = $request->referral_id ?? null;
             $user->save();
 
@@ -214,7 +225,6 @@ class AgentController extends Controller
         }
 
         $agents = $agents->orderByDesc('id')->agent()->paginate(Helpers::pagination_limit())->appends($query_param);
-        //return gettype($agents[0]->identification_image);
         return view('admin-views.agent.kyc_list', compact('agents', 'search'));
     }
 

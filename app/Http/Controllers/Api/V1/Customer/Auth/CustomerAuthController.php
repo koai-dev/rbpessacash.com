@@ -18,6 +18,7 @@ use App\Models\RequestMoney;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserLogHistory;
+use App\Models\WithdrawRequest;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -111,8 +112,6 @@ class CustomerAuthController extends Controller
         $validator = Validator::make($request->all(), [
             'f_name' => 'required',
             'l_name' => 'required',
-            'email' => '',
-            'image' => '',
             'gender' => 'required',
             'occupation' => 'required'
         ]);
@@ -256,6 +255,8 @@ class CustomerAuthController extends Controller
     {
         try {
             $customer = User::with('emoney')->customer()->find($request->user()->id);
+            $pending_withdraw = WithdrawRequest::where(['user_id' => $customer->id, 'request_status' => 'pending'])->count();
+
             $data = [];
             $data['name'] = $customer['f_name'] . ' ' . $customer['l_name'];
             $data['phone'] = $customer['phone'];
@@ -276,6 +277,8 @@ class CustomerAuthController extends Controller
                     'two_factor' => (integer)$customer->two_factor,
                     'fcm_token' => $customer->fcm_token,
                     'balance' => (float)$customer->emoney->current_balance,
+                    'pending_balance' => (float)$customer->emoney->pending_balance,
+                    'pending_withdraw_count' => $pending_withdraw,
                     'unique_id' => $customer->unique_id,
                     'qr_code' => strval($qr),
                     'is_kyc_verified' => (int)$customer->is_kyc_verified,

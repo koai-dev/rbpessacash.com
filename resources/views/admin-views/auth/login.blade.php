@@ -226,7 +226,7 @@
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-10">
-                                        <span>{{translate('Email')}} : +8801100000000</span><br>
+                                        <span>{{translate('Phone')}} : +8801100000000</span><br>
                                         <span>{{translate('Password')}} : {{translate('12345678')}}</span>
                                     </div>
                                     <div class="col-2">

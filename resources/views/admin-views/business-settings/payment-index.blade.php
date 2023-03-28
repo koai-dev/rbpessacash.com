@@ -18,8 +18,8 @@
         </div>
         <!-- End Page Header -->
 
-        <div class="row" style="padding-bottom: 20px">
-            <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6 pb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('sslcommerz')}}</h5>
@@ -67,7 +67,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 pb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('razorpay')}}</h5>
@@ -112,7 +112,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6" style="margin-top: 26px!important;">
+            <div class="col-md-6 pb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('paypal')}}</h5>
@@ -157,7 +157,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 pt-4">
+            <div class="col-md-6 pb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('stripe')}}</h5>
@@ -204,8 +204,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-6" style="margin-top: 26px!important;">
+            <div class="col-md-6 pb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('paystack')}}</h5>
@@ -260,7 +259,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 pt-4">
+            <div class="col-md-6 pb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('senang')}} {{translate('pay')}}</h5>
@@ -308,8 +307,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-6" style="margin-top: 26px!important;">
+            <div class="col-md-6 pb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('bkash')}}</h5>
@@ -365,8 +363,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-6" style="margin-top: 26px!important;">
+            <div class="col-md-6 pb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('paymob')}}</h5>
@@ -425,8 +422,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-6" style="margin-top: 26px!important;">
+            <div class="col-md-6 pb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('flutterwave')}}</h5>
@@ -479,8 +475,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-6" style="margin-top: 26px!important;">
+            <div class="col-md-6 pb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('mercadopago')}}</h5>

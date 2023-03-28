@@ -535,6 +535,10 @@ class TransactionController extends Controller
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
 
+        if($request->user()->is_kyc_verified != 1) {
+            return response()->json(['message' => 'Your account is not verified, Complete your account verification'], 403);
+        }
+
         //input fields validation check
         $withdrawal_method = $this->withdrawal_method->find($request->withdrawal_method_id);
         $fields = array_column($withdrawal_method->method_fields, 'input_name');
@@ -547,7 +551,7 @@ class TransactionController extends Controller
             }
         }
 
-        $this->withdraw_request->create([
+        /*$this->withdraw_request->create([
             'user_id' => $request->user()->id,
             'amount' => $request->amount,
             'request_status' => 'pending',
@@ -557,6 +561,38 @@ class TransactionController extends Controller
             'withdrawal_method_fields' => $values,
         ]);
 
-        return response()->json(response_formatter(DEFAULT_STORE_200, null, null), 200);
+        return response()->json(response_formatter(DEFAULT_STORE_200, null, null), 200);*/
+
+        try {
+            DB::beginTransaction();
+
+            $withdraw_request = $this->withdraw_request;
+            $withdraw_request->user_id = $request->user()->id;
+            $withdraw_request->amount = $request->amount;
+            $withdraw_request->request_status = 'pending';
+            $withdraw_request->is_paid = 0;
+            $withdraw_request->sender_note = $request->sender_note;
+            $withdraw_request->withdrawal_method_id = $request->withdrawal_method_id;
+            $withdraw_request->withdrawal_method_fields = $values;
+            $withdraw_request->save();
+
+            $user_emoney = EMoney::where('user_id', $request->user()->id)->first();
+
+            if ($user_emoney->current_balance < $request->amount) {
+                return response()->json(['message' => 'Your account do not have enough balance.'], 403);
+            }
+
+            $user_emoney->current_balance -= $request->amount;
+            $user_emoney->pending_balance += $request->amount;
+            $user_emoney->save();
+
+            DB::commit();
+
+            return response()->json(response_formatter(DEFAULT_STORE_200, null, null), 200);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Withdraw request failed'], 403);
+        }
     }
 }

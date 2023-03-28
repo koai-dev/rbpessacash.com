@@ -64,5 +64,12 @@ class Transaction extends Model
         });
     }
 
+    public function scopeMerchant($query)
+    {
+        return $query->whereHas('user', function ($q) {
+            $q->where('type', 3);
+        });
+    }
+
 
 }

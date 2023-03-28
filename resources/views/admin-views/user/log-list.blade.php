@@ -12,7 +12,7 @@
         <!-- Card -->
         <div class="card">
             <!-- Header -->
-            <div class="card-header">
+            <div class="card-header __wrap-gap-10">
                 <div class="flex-start">
                     <h5 class="card-header-title">{{translate('User Logs')}}</h5>
                     <h5 class="card-header-title text-primary mx-1">({{ $user_logs->total() }})</h5>
@@ -45,7 +45,7 @@
                         <th>{{translate('phone')}}</th>
                         <th>{{translate('ip_address')}}</th>
                         <th>{{translate('device_id')}}</th>
-                        <th>{{translate('browser')}}</th>
+{{--                        <th>{{translate('browser')}}</th>--}}
                         <th>{{translate('os')}}</th>
                         <th>{{translate('device_model')}}</th>
                         <th>{{translate('login_time')}}</th>
@@ -72,13 +72,13 @@
                                 </td>
                                 <td>{{ $user_log->ip_address }}</td>
                                 <td>{{ $user_log->device_id }}</td>
-                                <td>
-                                    @if($user_log->browser)
-                                        {{$user_log->browser}}
-                                    @else
-                                        <small class="badge-pill badge-light">{{translate('Not_available')}}</small>
-                                    @endif
-                                </td>
+{{--                                <td>--}}
+{{--                                    @if($user_log->browser)--}}
+{{--                                        {{$user_log->browser}}--}}
+{{--                                    @else--}}
+{{--                                        <small class="badge-pill badge-light">{{translate('Not_available')}}</small>--}}
+{{--                                    @endif--}}
+{{--                                </td>--}}
                                 <td>{{ $user_log->os }}</td>
                                 <td>{{ $user_log->device_model }}</td>
                                 <td>{{ date_time_formatter($user_log->created_at) }}</td>

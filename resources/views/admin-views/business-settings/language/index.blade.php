@@ -8,16 +8,15 @@
 
 @section('content')
     <div class="content container-fluid">
-        <!-- Page Heading -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a
-                        href="{{route('admin.dashboard')}}">{{translate('Dashboard')}}</a>
-                </li>
-                <li class="breadcrumb-item"
-                    aria-current="page">{{translate('language_setting')}}</li>
-            </ol>
-        </nav>
+
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-sm mb-2 mb-sm-0">
+                    <h1 class="page-header-title"> {{translate('language_setting')}}
+                    </h1>
+                </div>
+            </div>
+        </div>
 
         <div class="row" style="margin-top: 20px">
             <div class="col-md-12">
@@ -41,13 +40,11 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">{{ translate('SL#')}}</th>
-                                    <th scope="col">{{translate('Id')}}</th>
                                     <th scope="col">{{translate('name')}}</th>
                                     <th scope="col">{{translate('Code')}}</th>
-                                    <th scope="col">{{translate('status')}}</th>
-                                    <th scope="col">{{translate('default')}} {{translate('status')}}</th>
-                                    <th scope="col" style="width: 100px"
-                                        class="text-center">{{translate('action')}}</th>
+                                    <th scope="col" class="text-center">{{translate('status')}}</th>
+                                    <th scope="col" class="text-center">{{translate('default')}} {{translate('status')}}</th>
+                                    <th scope="col" class="text-center">{{translate('action')}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -56,12 +53,11 @@
                                     @foreach($language as $key =>$data)
                                         <tr>
                                             <td>{{$key+1}}</td>
-                                            <td>{{$data['id']}}</td>
                                             <td>{{$data['name']}}
 {{--                                                ( {{isset($data['direction'])?$data['direction']:'ltr'}} )--}}
                                             </td>
                                             <td>{{$data['code']}}</td>
-                                            <td>
+                                            <td class="text-center">
                                                 <label class="switch">
                                                     <input type="checkbox"
                                                            onclick="updateStatus('{{route('admin.business-settings.language.update-status')}}','{{$data['code']}}')"
@@ -69,7 +65,7 @@
                                                     <span class="slider round"></span>
                                                 </label>
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 <label class="switch">
                                                     <input type="checkbox"
                                                            onclick="window.location.href ='{{route('admin.business-settings.language.update-default-status', ['code'=>$data['code']])}}'"
@@ -78,8 +74,7 @@
                                                 </label>
                                             </td>
                                             <td class="text-center">
-
-                                                <div class="dropdown float-right">
+                                                <div class="dropdown">
                                                     <button class="btn btn-seconary btn-sm dropdown-toggle"
                                                             type="button"
                                                             id="dropdownMenuButton" data-toggle="dropdown"
@@ -133,7 +128,7 @@
                                     <div class="form-group">
                                         <label for="recipient-name"
                                                class="col-form-label">{{translate('language')}} </label>
-                                        <input type="text" class="form-control" id="recipient-name" name="name">
+                                        <input type="text" class="form-control" id="recipient-name" name="name" required>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -331,7 +326,7 @@
                                                 <label for="recipient-name"
                                                        class="col-form-label">{{translate('language')}} </label>
                                                 <input type="text" class="form-control" value="{{$data['name']}}"
-                                                       name="name">
+                                                       name="name" required>
                                             </div>
                                         </div>
                                         <div class="col-12">

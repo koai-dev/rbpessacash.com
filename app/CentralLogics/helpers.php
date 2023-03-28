@@ -10,6 +10,7 @@ use App\Models\Fund;
 use App\Models\Transaction;
 use App\Models\Transfer;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +20,7 @@ use Laravelpkg\Laravelchk\Http\Controllers\LaravelchkController;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
+use Stevebauman\Location\Facades\Location;
 
 class helpers
 {
@@ -239,6 +241,9 @@ class helpers
         } elseif ($status == RECEIVED_MONEY) {
             $data = self::get_business_settings(RECEIVED_MONEY);
 
+        } elseif ($status == PAYMENT) {
+            $data = self::get_business_settings(PAYMENT);
+
         } else {
             $data['status'] = 0;
             $data['message'] = "";
@@ -281,7 +286,7 @@ class helpers
     {
         $err_keeper = [];
         foreach ($validator->errors()->getMessages() as $index => $error) {
-            array_push($err_keeper, ['code' => $index, 'message' => $error[0]]);
+            $err_keeper[] = ['code' => $index, 'message' => $error[0]];
         }
         return $err_keeper;
     }
@@ -721,6 +726,7 @@ class helpers
         $response = $class->actch();
         return json_decode($response->getContent(),true);
     }
+
 }
 
 function translate($key)
@@ -739,3 +745,5 @@ function translate($key)
     }
     return $result;
 }
+
+

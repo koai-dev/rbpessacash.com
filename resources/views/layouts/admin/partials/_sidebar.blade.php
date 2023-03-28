@@ -68,7 +68,7 @@
                     </li>
 
                     <li class="navbar-vertical-aside-has-menu {{Request::is('admin/transaction/index')?'active':''}}">
-                        <a class="nav-link " href="{{route('admin.transaction.index')}}"
+                        <a class="nav-link " href="{{route('admin.transaction.index', ['trx_type'=>'all'])}}"
                            title="{{translate('transaction')}}">
                             <i class="tio-money-vs nav-icon"></i>
                             <span class="text-truncate">{{translate('Transactions')}}</span>
@@ -78,13 +78,13 @@
                     <li class="navbar-vertical-aside-has-menu {{Request::is('admin/transaction/request-money')?'active':''}}">
                         <a class="nav-link " href="{{route('admin.transaction.request_money')}}"
                            title="{{translate('Agent Request Money')}}">
-                            <i class="tio-pound-outlined nav-icon"></i>
+                            <i class="tio-pound nav-icon"></i>
                             <span class="text-truncate">{{translate('Agent Request Money')}}</span>
                         </a>
                     </li>
 
                     <li class="navbar-vertical-aside-has-menu {{Request::is('admin/withdraw/requests')?'active':''}}">
-                        <a class="nav-link " href="{{route('admin.withdraw.requests')}}"
+                        <a class="nav-link " href="{{route('admin.withdraw.requests', ['request_status'=>'all'])}}"
                            title="{{translate('Agent Request Money')}}">
                             <i class="tio-pound-outlined nav-icon"></i>
                             <span class="text-truncate">{{translate('Withdraw_Requests')}}</span>
@@ -139,6 +139,32 @@
                                    title="{{translate('Verification Requests')}}">
                                     <span class="tio-circle nav-indicator-icon"></span>
                                     <span class="text-truncate">{{translate('Verification Requests')}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {{-- merchant --}}
+                    <li class="navbar-vertical-aside-has-menu {{Request::is('admin/merchant*')?'active':''}}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                        >
+                            <i class="tio-user-big nav-icon"></i>
+                            <span
+                                class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{translate('merchant')}}</span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display: {{Request::is('admin/merchant*')?'block':'none'}}">
+                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/merchant/add')?'active':''}}">
+                                <a class="nav-link " href="{{route('admin.merchant.add')}}"
+                                   title="{{translate('add')}}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{translate('register')}}</span>
+                                </a>
+                            </li>
+                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/merchant/list')?'active':''}}">
+                                <a class="nav-link " href="{{route('admin.merchant.list')}}"
+                                   title="{{translate('list')}}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{translate('list')}}</span>
                                 </a>
                             </li>
                         </ul>
@@ -235,7 +261,7 @@
                     <!-- End Pages -->
 
                     <!-- Pages -->
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('admin/business-settings*')?'active':''}} mb-4">
+                    <li class="navbar-vertical-aside-has-menu {{Request::is('admin/business-settings*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
                         >
                             <i class="tio-settings nav-icon"></i>
@@ -283,7 +309,7 @@
                                 </a>
                             </li>
 
-                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/business-settings/recaptcha_index*')?'active':''}}">
+                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/business-settings/recaptcha')?'active':''}}">
                                 <a class="nav-link " href="{{route('admin.business-settings.recaptcha_index')}}"
                                    title="{{translate('languages')}}">
                                     <span class="tio-circle nav-indicator-icon"></span>
@@ -326,6 +352,32 @@
 
                         </ul>
                     </li>
+
+                    <li class="navbar-vertical-aside-has-menu {{Request::is('admin/merchant-config*')?'active':''}} mb-5">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                        >
+                            <i class="tio-settings-outlined nav-icon"></i>
+                            <span
+                                class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{translate('Merchant Config')}}</span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="display: {{Request::is('admin/merchant-config*')?'block':'none'}}">
+                            <li class="nav-item {{Request::is('admin/merchant-config/merchant-payment-otp')?'active':''}}">
+                                <a class="nav-link "
+                                   href="{{route('admin.merchant-config.merchant-payment-otp')}}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{translate('Merchant OTP')}}</span>
+                                </a>
+                            </li>
+                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/merchant-config/settings')?'active':''}}">
+                                <a class="nav-link " href="{{route('admin.merchant-config.settings')}}"
+                                   title="{{translate('settings')}}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{translate('settings')}}</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
                     <!-- End Pages -->
                 </ul>
             </div>
@@ -337,3 +389,15 @@
 <div id="sidebarCompact" class="d-none">
 
 </div>
+
+@push('script_2')
+<script>
+    $(window).on('load' , function() {
+        if($(".navbar-vertical-content li.active").length) {
+            $('.navbar-vertical-content').animate({
+                scrollTop: $(".navbar-vertical-content li.active").offset().top - 150
+            }, 10);
+        }
+    });
+</script>
+@endpush

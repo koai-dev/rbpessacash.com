@@ -16,21 +16,49 @@
                     <h1><i class="tio-user-switch"></i></h1>
                 </div>
             </div>
+            <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom gap-3">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link {{$request_status=='all'?'active':''}}"
+                           href="{{url()->current()}}?request_status=all">
+                            {{translate('all')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{$request_status=='pending'?'active':''}}"
+                           href="{{url()->current()}}?request_status=pending">
+                            {{translate('pending')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{$request_status=='approved'?'active':''}}"
+                           href="{{url()->current()}}?request_status=approved">
+                            {{translate('approved')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{$request_status=='denied'?'active':''}}"
+                           href="{{url()->current()}}?request_status=denied">
+                            {{translate('denied')}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <!-- End Page Header -->
         <div class="row gx-2 gx-lg-3">
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <div class="card">
-                    <div class="card-header flex-between">
+                    <div class="card-header flex-between __wrap-gap-10">
                         <div class="flex-start">
                             <h5 class="card-header-title">{{translate('transaction Table')}}</h5>
                             <h5 class="card-header-title text-primary mx-1">({{ $withdraw_requests->total() }})</h5>
                         </div>
-                        <div class="flex-between">
-                            <div class="form-group px-1">
-                                    <a class="btn-sm btn-secondary form-control" href="{{route('admin.withdraw.download', ['withdrawal_method'=>$method,'search'=>$search])}}">{{translate('Export')}}</a>
+                        <div class="flex-between __wrap-gap-10 align-items-center">
+                            <div class="form-group px-1 mb-0">
+                                    <a class="btn-sm btn-secondary form-control" href="{{route('admin.withdraw.download', ['withdrawal_method'=>$method,'search'=>$search, 'request_status'=>$request_status])}}">{{translate('Export')}}</a>
                             </div>
-                            <div class="form-group px-1">
+                            <div class="form-group px-1 mb-0">
                                 <select name="withdrawal_method" class="form-control js-select2-custom" id="withdrawal_method" required>
                                     <option value="all" selected>{{translate('Filter by method')}}</option>
                                     @foreach($withdrawal_methods as $withdrawal_method)
@@ -92,7 +120,7 @@
                                     <td>
                                         @if($withdraw_request->user)
                                             <small class="badge badge-pill">
-                                                {{ $withdraw_request->user->type == 1 ? translate('Agent') : ($withdraw_request->user->type == 2 ? translate('Customer') : '') }}
+                                                {{ $withdraw_request->user->type == 1 ? translate('Agent') : ($withdraw_request->user->type == 3 ? translate('Merchant') : translate('Customer')) }}
                                             </small>
                                         @else
                                             <span class="badge badge-pill">{{translate('Not_available')}}</span>
@@ -105,7 +133,7 @@
                                             {{translate($key) . ': ' . $item}} <br/>
                                         @endforeach
                                     <td>{{ $withdraw_request->sender_note }}</td>
-                                    <td>{{ $withdraw_request->sender_note }}</td>
+                                    <td>{{ $withdraw_request->admin_note }}</td>
                                     <td>
                                         @if( $withdraw_request->request_status == 'pending' )
                                             <div>
@@ -151,7 +179,7 @@
 @push('script_2')
     <script>
         $("#withdrawal_method").on('change', function (event) {
-            location.href = "{{route('admin.withdraw.requests')}}" + '?withdrawal_method=' + $(this).val();
+            location.href = "{{route('admin.withdraw.requests')}}" + '?request_status=all' + '&withdrawal_method=' + $(this).val();
         })
     </script>
 @endpush

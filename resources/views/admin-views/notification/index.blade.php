@@ -42,7 +42,7 @@
                         <textarea name="description" class="form-control" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="text-dark">{{translate('image')}}</label><small style="color: red"> ({{translate('ratio 3:1')}})</small>
+                        <label class="text-dark">{{translate('image')}}</label><small style="color: red">*  ({{translate('ratio 3:1')}})</small>
                         <div class="custom-file">
                             <input type="file" name="image" id="customFileEg1" class="custom-file-input"
                                    accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">
@@ -60,7 +60,7 @@
 
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2 mt-2">
                 <div class="card">
-                    <div class="card-header flex-between">
+                    <div class="card-header flex-between __wrap-gap-10">
                         <div class="flex-start">
                             <h5 class="card-header-title">{{translate('Notification Table')}}</h5>
                             <h5 class="card-header-title text-primary mx-1">({{ $notifications->total() }})</h5>

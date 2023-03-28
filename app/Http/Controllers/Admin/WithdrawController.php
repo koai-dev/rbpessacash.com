@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\CentralLogics\helpers;
 use App\Http\Controllers\Controller;
+use App\Models\EMoney;
 use App\Models\User;
 use App\Models\WithdrawalMethod;
 use App\Models\WithdrawRequest;
@@ -28,9 +29,10 @@ class WithdrawController extends Controller
     {
         $query_param = [];
         $search = $request['search'];
+        $request_status = $request['request_status'];
 
         $method = $request->withdrawal_method;
-        $withdraw_requests = $this->withdraw_request
+        $withdraw_requests = $this->withdraw_request->with('user', 'withdrawal_method')
             ->when($request->has('search'), function ($query) use ($request) {
                 $key = explode(' ', $request['search']);
 
@@ -44,20 +46,21 @@ class WithdrawController extends Controller
                     }
                 })->get()->pluck('id')->toArray();
 
-                $query_param = ['search' => $request['search']];
+               // $query_param = ['search' => $request['search'], 'request_status' => $request['request_status']];
                 return $query->whereIn('user_id', $user_ids);
             })
-            ->with('user', 'withdrawal_method')
+            ->when($request->has('request_status') && $request->request_status != 'all', function ($query) use ($request) {
+                return $query->where('request_status', $request->request_status);
+            })
             ->when($request->has('withdrawal_method') && $request->withdrawal_method != 'all', function ($query) use ($request) {
                 return $query->where('withdrawal_method_id', $request->withdrawal_method);
-            })
-            ->latest()
-            ->paginate(Helpers::pagination_limit())
-            ->appends($query_param);
+            });
 
+        $query_param = ['search' => $request['search'], 'request_status' => $request['request_status']];
+        $withdraw_requests = $withdraw_requests->latest()->paginate(Helpers::pagination_limit())->appends($query_param);
         $withdrawal_methods = $this->withdrawal_method->latest()->get();
 
-        return view('admin-views.withdraw.index', compact('withdraw_requests', 'withdrawal_methods', 'method', 'search'));
+        return view('admin-views.withdraw.index', compact('withdraw_requests', 'withdrawal_methods', 'method', 'search', 'request_status'));
     }
 
     public function status_update(Request $request)
@@ -74,21 +77,34 @@ class WithdrawController extends Controller
             return back();
         }
 
-        //record in withdraw_requests table
-        $withdraw_request->request_status = $request->request_status == 'approve' ? 'approved' : 'denied';
-        $withdraw_request->is_paid = 1;
-        $withdraw_request->admin_note = $request->admin_note ?? null;
-        $withdraw_request->save();
+        if ($request->request_status == 'deny'){
+            $account = EMoney::where(['user_id' => $withdraw_request->user->id])->first();
+            $account->pending_balance -= $withdraw_request['amount'];
+            $account->current_balance += $withdraw_request['amount'];
+            $account->save();
+
+            //record in withdraw_requests table
+            $withdraw_request->request_status = $request->request_status == 'deny' ? 'denied' : 'approved' ;
+            $withdraw_request->is_paid = 0;
+            $withdraw_request->admin_note = $request->admin_note ?? null;
+            $withdraw_request->save();
+        }
+
 
         if ($request->request_status == 'approve')
         {
             $admin = $this->user->with(['emoney'])->where('type', 0)->first();
             if ($admin->emoney->current_balance < $withdraw_request['amount']) {
-                Toastr::success(translate('You do not have enough balance. Please generate eMoney first.'));
+                Toastr::warning(translate('You do not have enough balance. Please generate eMoney first.'));
                 return back();
             }
 
             accept_withdraw_transaction($withdraw_request->user->id, $withdraw_request['amount']);
+
+            $withdraw_request->request_status = $request->request_status == 'approve' ? 'approved' : 'denied';
+            $withdraw_request->is_paid = 1;
+            $withdraw_request->admin_note = $request->admin_note ?? null;
+            $withdraw_request->save();
         }
 
         $data = [
@@ -106,6 +122,7 @@ class WithdrawController extends Controller
     public function download(Request $request)
     {
         $withdraw_requests = $this->withdraw_request
+            ->with('user', 'withdrawal_method')
             ->when($request->has('search'), function ($query) use ($request) {
                 $key = explode(' ', $request['search']);
 
@@ -121,10 +138,13 @@ class WithdrawController extends Controller
 
                 return $query->whereIn('user_id', $user_ids);
             })
-            ->with('user', 'withdrawal_method')
+            ->when($request->has('request_status') && $request->request_status != 'all', function ($query) use ($request) {
+                return $query->where('request_status', $request->request_status);
+            })
             ->when($request->has('withdrawal_method') && $request->withdrawal_method != 'all', function ($query) use ($request) {
                 return $query->where('withdrawal_method_id', $request->withdrawal_method);
             })->get();
+
         $storage = [];
 
         foreach ($withdraw_requests as $key=>$withdraw_request) {
@@ -134,7 +154,9 @@ class WithdrawController extends Controller
                     'UserName' => $withdraw_request->user->f_name . ' ' . $withdraw_request->user->l_name,
                     'UserPhone' => $withdraw_request->user->phone,
                     'UserEmail' => $withdraw_request->user->email,
-                    'method_name' => $withdraw_request->withdrawal_method->method_name??'',
+                    'MethodName' => $withdraw_request->withdrawal_method->method_name??'',
+                    'Amount' => $withdraw_request->amount,
+                    'RequestStatus' => $withdraw_request->request_status,
                 ];
 
                 $storage[] = array_merge($data, $withdraw_request->withdrawal_method_fields);

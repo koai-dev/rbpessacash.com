@@ -29,41 +29,7 @@
             <!-- Nav Scroller -->
             <div class="js-nav-scroller hs-nav-scroller-horizontal">
                 <!-- Nav -->
-                <ul class="nav nav-tabs page-header-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           @if($user->type == 1)
-                           href="{{route('admin.agent.view',[$user['id']])}}"
-                           @elseif($user->type == 2)
-                           href="{{route('admin.customer.view',[$user['id']])}}"
-                           @else
-                           href="#"
-                            @endif
-                        >{{translate('details')}}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active"
-                           @if($user->type == 1)
-                           href="{{route('admin.agent.transaction',[$user['id']])}}"
-                           @elseif($user->type == 2)
-                           href="{{route('admin.customer.transaction',[$user['id']])}}"
-                           @else
-                           href="#"
-                            @endif
-                        >{{translate('Transactions')}}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           @if(isset($user) && $user->type == 1)
-                           href="{{route('admin.agent.log',[$user['id']])}}"
-                           @elseif(isset($user) && $user->type == 2)
-                           href="{{route('admin.customer.log',[$user['id']])}}"
-                           @else
-                           href="#"
-                            @endif
-                        >{{translate('Logs')}}</a>
-                    </li>
-                </ul>
+                @include('admin-views.view.partails.navbar')
                 <!-- End Nav -->
             </div>
             <!-- End Nav Scroller -->
@@ -73,7 +39,7 @@
         <div class="row gx-2 gx-lg-3">
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <div class="card">
-                    <div class="card-header flex-between">
+                    <div class="card-header flex-between __wrap-gap-10">
                         <div class="flex-start">
                             <h5 class="card-header-title">{{translate('transaction Table')}}</h5>
                             <h5 class="card-header-title text-primary mx-1">({{ $transactions->total() }})</h5>
@@ -115,10 +81,14 @@
                                 <tr>
                                     <td>{{$transactions->firstitem()+$key}}</td>
                                     <td>{{ $transaction->transaction_id??'' }}</td>
+                                    @php
+                                        $sender = $transaction['transaction_type'] == 'payment' ? $transaction['to_user_id'] : $transaction['from_user_id'];
+                                        $receiver = $transaction['transaction_type'] == 'payment' ? $transaction['from_user_id'] : $transaction['to_user_id'];
+                                    @endphp
                                     <td>
-                                        @php($sender_info = Helpers::get_user_info($transaction['from_user_id']))
+                                        @php($sender_info = Helpers::get_user_info($sender))
                                         @if($sender_info != null)
-                                            <a href="{{route('admin.customer.view',[$transaction['to_user_id']])}}">
+                                            <a href="{{route('admin.customer.view',[$sender])}}">
                                                 {{ $sender_info->f_name ?? '' }} {{ $sender_info->phone ?? ''}}
                                             </a>
                                         @else
@@ -126,9 +96,9 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @php($receiver_info = Helpers::get_user_info($transaction['to_user_id']))
+                                        @php($receiver_info = Helpers::get_user_info($receiver))
                                         @if($receiver_info != null)
-                                            <a href="{{route('admin.customer.view',[$transaction['to_user_id']])}}">
+                                            <a href="{{route('admin.customer.view',[$receiver])}}">
                                                 {{ $receiver_info->f_name ?? '' }} {{ $receiver_info->phone ?? '' }}
                                             </a>
                                         @else

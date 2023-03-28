@@ -10,12 +10,10 @@
     <div class="content container-fluid">
         <!-- Page Header -->
         <div class="page-header">
-            <div class="row align-items-center">
-                <div class="col-sm mb-2 mb-sm-0">
-                    <h1 class="page-header-title"><i
-                            class="tio-filter-list"></i> {{translate('Agent')}} {{translate('list')}}
-                    </h1>
-                </div>
+            <div class="__wrap-gap-10 justify-content-between d-flex align-items-center">
+                <h1 class="page-header-title m-0"><i
+                        class="tio-filter-list"></i> {{translate('Agent')}} {{translate('list')}}
+                </h1>
                 <a href="{{route('admin.agent.add')}}" class="btn btn-primary pull-right mr-3"><i
                         class="tio-add-circle"></i> {{translate('Add')}} {{translate('Agent')}}
                 </a>
@@ -27,7 +25,7 @@
                 <!-- Card -->
                 <div class="card">
                     <!-- Header -->
-                    <div class="card-header">
+                    <div class="card-header __wrap-gap-10">
                         <div class="flex-start">
                             <h5 class="card-header-title">{{translate('Agent Table')}}</h5>
                             <h5 class="card-header-title text-primary mx-1">({{ $agents->total() }})</h5>

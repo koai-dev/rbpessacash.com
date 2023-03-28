@@ -53,12 +53,12 @@
                         <ul id="navbarSettings"
                             class="js-sticky-block js-scrollspy navbar-nav navbar-nav-lg nav-tabs card card-navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" href="javascript:" id="generalSection">
+                                <a class="nav-link active text-primary" href="javascript:" id="generalSection">
                                     <i class="tio-user-outlined nav-icon"></i> Basic information
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="javascript:" id="passwordSection">
+                                <a class="nav-link text-primary" href="javascript:" id="passwordSection">
                                     <i class="tio-lock-outlined nav-icon"></i> Password
                                 </a>
                             </li>

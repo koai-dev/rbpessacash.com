@@ -167,7 +167,7 @@
                     <div class="row">
                         <div class="col-md-4 col-12">
                             <div class="form-group">
-                                <label class="input-label text-capitalize d-inline" for="country">{{translate('country')}}</label>
+                                <label class="input-label text-capitalize" for="country">{{translate('country')}}</label>
                                 <select id="country" name="country" class="form-control  js-select2-custom">
                                     <option value="" selected disabled>{{translate('Select Country')}}</option>
                                     <option value="AF">Afghanistan</option>
@@ -426,7 +426,7 @@
                         @php($tz=\App\Models\BusinessSetting::where('key','timezone')->first())
                         @php($tz=$tz?$tz->value:0)
                             <div class="form-group">
-                                <label class="input-label d-inline text-capitalize">{{translate('time')}} {{translate('zone')}}</label>
+                                <label class="input-label text-capitalize">{{translate('time')}} {{translate('zone')}}</label>
                                 <select name="timezone" class="form-control js-select2-custom">
                                     <option value="UTC" {{$tz?($tz==''?'selected':''):''}}>UTC</option>
                                     <option value="Etc/GMT+12"  {{$tz?($tz=='Etc/GMT+12'?'selected':''):''}}>(GMT-12:00) International Date Line West</option>
@@ -573,19 +573,29 @@
 {{--                        </div>--}}
 
                         @php($phone=\App\Models\BusinessSetting::where('key','phone')->first())
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-4 col-12">
                             <div class="form-group">
-                                <label class="input-label d-inline" for="exampleFormControlInput1">{{translate('phone')}}</label>
+                                <label class="input-label" for="exampleFormControlInput1">{{translate('phone')}}</label>
                                 <input type="text" value="{{$phone->value??''}}"
                                        name="phone" class="form-control"
                                        placeholder="" required>
                             </div>
                         </div>
 
-                        @php($email=\App\Models\BusinessSetting::where('key','email')->first())
-                        <div class="col-md-6 col-12">
+                        @php($hotline=\App\Models\BusinessSetting::where('key','hotline_number')->first())
+                        <div class="col-md-4 col-12">
                             <div class="form-group">
-                                <label class="input-label d-inline" for="exampleFormControlInput1">{{translate('email')}}</label>
+                                <label class="input-label" for="exampleFormControlInput1">{{translate('Hotline Number')}}</label>
+                                <input type="text" value="{{$hotline->value??''}}"
+                                       name="hotline_number" class="form-control"
+                                       placeholder="" required>
+                            </div>
+                        </div>
+
+                        @php($email=\App\Models\BusinessSetting::where('key','email')->first())
+                        <div class="col-md-4 col-12">
+                            <div class="form-group">
+                                <label class="input-label" for="exampleFormControlInput1">{{translate('email')}}</label>
                                 <input type="email" value="{{$email->value??''}}"
                                        name="email" class="form-control" placeholder=""
                                        required>
@@ -598,8 +608,8 @@
                         @php($two_factor = \App\CentralLogics\Helpers::get_business_settings('two_factor'))
                         <div class="col-md-6 col-12">
                             <div class="form-group">
-                                <label class="input-label d-inline">{{translate('Two Factor Authentication')}}</label>
-                                <div class="input-group input-group-md-down-break">
+                                <label class="input-label">{{translate('Two Factor Authentication')}}</label>
+                                <div class="input-group">
                                     <!-- Custom Radio -->
                                     <div class="form-control">
                                         <div class="custom-control custom-radio">
@@ -632,7 +642,7 @@
                             <div class="form-group">
                                 <label>{{translate('phone')}} {{translate('verification')}} ( OTP
                                     )</label><small style="color: red">*</small>
-                                <div class="input-group input-group-md-down-break">
+                                <div class="input-group">
                                     <!-- Custom Radio -->
                                     <div class="form-control">
                                         <div class="custom-control custom-radio">
@@ -665,7 +675,7 @@
 {{--                            <div class="form-group">--}}
 {{--                                <label>{{translate('email')}} {{translate('verification')}}</label><small--}}
 {{--                                    style="color: red">*</small>--}}
-{{--                                <div class="input-group input-group-md-down-break">--}}
+{{--                                <div class="input-group">--}}
 {{--                                    <!-- Custom Radio -->--}}
 {{--                                    <div class="form-control">--}}
 {{--                                        <div class="custom-control custom-radio">--}}
@@ -698,7 +708,7 @@
                         <div class="col-sm-12">
                             @php($address=\App\Models\BusinessSetting::where('key','address')->first())
                             <div class="form-group">
-                                <label class="input-label d-inline" for="exampleFormControlInput1">{{translate('address')}}</label>
+                                <label class="input-label" for="exampleFormControlInput1">{{translate('address')}}</label>
                                 <textarea type="text" id="address" name="address" class="form-control"
                                           placeholder="" rows="1" required>{{$address->value??''}}</textarea>
                             </div>
@@ -709,7 +719,7 @@
                     @php($footer_text=\App\Models\BusinessSetting::where('key','footer_text')->first())
                         <div class="col-12">
                             <div class="form-group">
-                                <label class="input-label d-inline" for="exampleFormControlInput1">{{translate('footer')}} {{translate('text')}}</label>
+                                <label class="input-label" for="exampleFormControlInput1">{{translate('footer')}} {{translate('text')}}</label>
                                 <textarea type="text" value=""
                                        name="footer_text" class="form-control" placeholder=""
                                        required>{{$footer_text->value??''}}</textarea>
@@ -717,10 +727,11 @@
                         </div>
                     </div>
 
+
                     @php($logo=\App\Models\BusinessSetting::where('key','logo')->first())
                     @php($logo=$logo->value??'')
                     <div class="form-group">
-                        <label class="input-label d-inline">{{translate('logo')}}</label><small style="color: red">* ( {{translate('ratio')}} 3:1 )</small>
+                        <label class="input-label">{{translate('logo')}} <small style="color: red">* ( {{translate('ratio')}} 3:1 )</small></label>
                         <div class="custom-file">
                             <input type="file" name="logo" id="customFileEg1" class="custom-file-input"
                                    accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">
@@ -728,7 +739,7 @@
                         </div>
 
                         <div class="text-center mt-3">
-                            <img style="height: 100px;border: 1px solid; border-radius: 10px;" id="viewer"
+                            <img style="height: 100px;border: 1px solid; border-radius: 10px;max-width:100%;object-fit:contain" id="viewer"
                                  onerror="this.src='{{asset('public/assets/admin/img/160x160/img2.jpg')}}'"
                                  src="{{asset('storage/app/public/business/'.$logo)}}" alt="logo image"/>
                         </div>

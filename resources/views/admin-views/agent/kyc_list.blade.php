@@ -28,7 +28,7 @@
         <!-- Card -->
         <div class="card">
             <!-- Header -->
-            <div class="card-header">
+            <div class="card-header __wrap-gap-10">
                 <div class="flex-start">
                     <h5 class="card-header-title">{{translate('Verification requests list')}}</h5>
                     <h5 class="card-header-title text-primary mx-1">({{ $agents->total() }})</h5>
@@ -120,6 +120,10 @@
                                 </div>
                             </td>
                             <td>
+                                <a class="btn btn-primary p-1 m-1"
+                                   href="{{route('admin.agent.view',[$agent['id']])}}">
+                                    <i class="fa fa-eye pl-1" aria-hidden="true"></i>
+                                </a>
                                 @if($agent['is_kyc_verified'] == 0)
                                     <a class="btn-sm btn-success mr-1"
                                        href="{{route('admin.agent.kyc_status_update',[$agent['id'], 1])}}">

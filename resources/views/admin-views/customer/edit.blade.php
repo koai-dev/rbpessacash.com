@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label class="input-label"
                                        for="exampleFormControlInput1">{{translate('email')}}
@@ -55,25 +55,16 @@
                                        placeholder="{{translate('Ex : ex@example.com')}}">
                             </div>
                         </div>
-                        <div class="col-md-4 col-12">
-                            <div class="form-group">
-                                <label class="input-label"
-                                       for="exampleFormControlInput1">{{translate('phone')}}</label>
-                                <input type="text" name="phone" class="form-control" value="{{ $customer['phone']??'' }}"
-                                       placeholder="{{translate('Ex : 017********')}}"
-                                       required disabled>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label class="input-label"
                                        for="exampleFormControlInput1">{{translate('Gender')}}</label>
                                 <select name="gender" class="form-control">
                                     <option value="" selected
                                             disabled>{{translate('Select Gender')}}</option>
-                                    <option value="male">{{translate('Male')}}</option>
-                                    <option value="female">{{translate('Female')}}</option>
-                                    <option value="other">{{translate('Other')}}</option>
+                                    <option value="male" {{ $customer['gender'] == 'male' ? 'selected' : '' }}>{{translate('Male')}}</option>
+                                    <option value="female" {{ $customer['gender'] == 'female' ? 'selected' : '' }}>{{translate('Female')}}</option>
+                                    <option value="other" {{ $customer['gender'] == 'other' ? 'selected' : '' }}>{{translate('Other')}}</option>
                                 </select>
                             </div>
                         </div>
@@ -92,12 +83,25 @@
                         <div class="col-md-6 col-12">
                             <label class="input-label"
                                    for="exampleFormControlInput1">{{translate('PIN')}}</label>
-                            <input type="text" name="password" class="form-control" value=""
-                                   placeholder="{{translate('4digit PIN')}}">
+                            <div class="input-group input-group-merge">
+                                <input type="password" name="password" class="js-toggle-password form-control form-control input-field"
+                                       placeholder="{{translate('4 digit PIN')}}"  maxlength="4"
+                                       data-hs-toggle-password-options='{
+                                            "target": "#changePassTarget",
+                                            "defaultClass": "tio-hidden-outlined",
+                                            "showClass": "tio-visible-outlined",
+                                            "classChangeTarget": "#changePassIcon"
+                                            }'>
+                                <div id="changePassTarget" class="input-group-append">
+                                    <a class="input-group-text" href="javascript:">
+                                        <i id="changePassIcon" class="tio-visible-outlined"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mt-4 mt-md-0">
                         <label>{{translate('Agent')}} {{translate('image')}}</label><small
                             style="color: red">* ( {{translate('ratio')}} 1:1 )</small>
                         <div class="custom-file">

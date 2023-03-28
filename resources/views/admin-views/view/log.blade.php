@@ -29,41 +29,7 @@
             <!-- Nav Scroller -->
             <div class="js-nav-scroller hs-nav-scroller-horizontal">
                 <!-- Nav -->
-                <ul class="nav nav-tabs page-header-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           @if($user->type == 1)
-                           href="{{route('admin.agent.view',[$user['id']])}}"
-                           @elseif($user->type == 2)
-                           href="{{route('admin.customer.view',[$user['id']])}}"
-                           @else
-                           href="#"
-                            @endif
-                        >{{translate('details')}}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           @if($user->type == 1)
-                           href="{{route('admin.agent.transaction',[$user['id']])}}"
-                           @elseif($user->type == 2)
-                           href="{{route('admin.customer.transaction',[$user['id']])}}"
-                           @else
-                           href="#"
-                            @endif
-                        >{{translate('Transactions')}}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active"
-                           @if(isset($user) && $user->type == 1)
-                           href="{{route('admin.agent.log',[$user['id']])}}"
-                           @elseif(isset($user) && $user->type == 2)
-                           href="{{route('admin.customer.log',[$user['id']])}}"
-                           @else
-                           href="#"
-                            @endif
-                        >{{translate('Logs')}}</a>
-                    </li>
-                </ul>
+                @include('admin-views.view.partails.navbar')
                 <!-- End Nav -->
             </div>
             <!-- End Nav Scroller -->
@@ -73,9 +39,9 @@
         <div class="row gx-2 gx-lg-3">
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <div class="card">
-                    <div class="card-header flex-between">
+                    <div class="card-header flex-between __wrap-gap-10">
                         <div class="flex-start">
-                            <h5 class="card-header-title">{{translate('Agent Log')}}</h5>
+                            <h5 class="card-header-title">{{translate('Logs')}}</h5>
                             <h5 class="card-header-title text-primary mx-1">({{ $user_logs->total() }})</h5>
                         </div>
                         <div>
@@ -104,7 +70,7 @@
                                 <th>{{translate('phone')}}</th>
                                 <th>{{translate('ip_address')}}</th>
                                 <th>{{translate('device_id')}}</th>
-                                <th>{{translate('browser')}}</th>
+{{--                                <th>{{translate('browser')}}</th>--}}
                                 <th>{{translate('os')}}</th>
                                 <th>{{translate('device_model')}}</th>
                                 <th>{{translate('login_time')}}</th>
@@ -126,7 +92,7 @@
                                         </td>
                                         <td>{{ $user_log->ip_address }}</td>
                                         <td>{{ $user_log->device_id }}</td>
-                                        <td>{{ $user_log->browser }}</td>
+{{--                                        <td>{{ $user_log->browser }}</td>--}}
                                         <td>{{ $user_log->os }}</td>
                                         <td>{{ $user_log->device_model }}</td>
                                         <td>{{ date('d-M-Y H:iA', strtotime($user_log->created_at)) }}</td>

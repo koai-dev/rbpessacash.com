@@ -87,9 +87,11 @@ class DashboardController extends Controller
 
         $total_balance = Transaction::where('user_id', Helpers::get_admin_id())->where('transaction_type', CASH_IN)->sum('credit');
         $charge_earned = EMoney::with('user')->where('user_id', Auth::id())->first()->charge_earned ?? 0;
+        $pending_balance = EMoney::with('user')->sum('pending_balance');
+
         $balance = [];
         $balance['total_balance'] = $total_balance;
-        $balance['used_balance'] = $used_balance;
+        $balance['used_balance'] = $used_balance + $pending_balance;
         $balance['unused_balance'] = $unused_balance;
         $balance['total_earned'] = $charge_earned;
 

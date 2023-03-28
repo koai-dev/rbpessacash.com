@@ -30,7 +30,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered __language-table" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th scope="col">{{translate('SL#')}}</th>
@@ -47,7 +47,7 @@
                                         <td>{{$count+1}}</td>
                                         <td>
                                             <input type="text" name="key[]" value="{{$language['key']}}" hidden>
-                                            <label>{{$language['key']}}</label>
+                                            <div class="word-break min-w-260">{{$language['key']}}</div>
                                         </td>
                                         <td>
                                             <input type="text" class="form-control" name="value[]"

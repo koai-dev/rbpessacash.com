@@ -58,7 +58,7 @@
 
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2 mt-2">
                 <div class="card">
-                    <div class="card-header flex-between">
+                    <div class="card-header __wrap-gap-10 flex-between">
                         <div class="flex-start">
                             <h5 class="card-header-title">{{translate('Banner Table')}}</h5>
                             <h5 class="card-header-title text-primary mx-1">({{ $banners->total() }})</h5>

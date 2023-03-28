@@ -11,6 +11,8 @@ use App\Http\Controllers\Gateway\StripePaymentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Gateway\BkashPaymentController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\Payment\PaymentOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -145,3 +147,21 @@ Route::get('authentication-failed', function () {
         'errors' => $errors
     ], 401);
 })->name('authentication-failed');
+
+Route::get('payment-process', [PaymentOrderController::class, 'payment_process'])->name('payment-process');
+Route::post('send-otp', [PaymentOrderController::class, 'send_otp'])->name('send-otp');
+Route::get('otp', [PaymentOrderController::class, 'otp_index'])->name('otp');
+Route::post('verify-otp', [PaymentOrderController::class, 'verify_otp'])->name('verify-otp');
+Route::get('resend-otp', [PaymentOrderController::class, 'resend_otp'])->name('resend-otp');
+Route::get('pin', [PaymentOrderController::class, 'pin_index'])->name('pin');
+Route::post('verify-pin', [PaymentOrderController::class, 'verify_pin'])->name('verify-pin');
+Route::get('success', [PaymentOrderController::class, 'success_index'])->name('success');
+Route::get('success-callback', [PaymentOrderController::class, 'payment_success_callback'])->name('success-callback');
+Route::get('back-to-callback', [PaymentOrderController::class, 'back_to_callback'])->name('back-to-callback');
+
+Route::group(['prefix' => 'pages', 'as' => 'pages.'], function () {
+    Route::get('terms-conditions', [PageController::class, 'get_terms_and_conditions'])->name('terms-conditions');
+    Route::get('privacy-policy', [PageController::class, 'get_privacy_policy'])->name('privacy-policy');
+    Route::get('about-us', [PageController::class, 'get_about_us'])->name('about-us');
+});
+

@@ -18,12 +18,12 @@
                     <div class="col-md-6">
                         <ul class="list-group">
                             <li class="list-group-item text-semibold">
-                                Php version 8.0 +
+                                Php version 8.2 +
 
                                 @php
                                     $phpVersion = number_format((float)phpversion(), 2, '.', '');
                                 @endphp
-                                @if ($phpVersion >= 8.0)
+                                @if ($phpVersion >= 8.2)
                                     <i class="tio-checkmark-circle-outlined text-success pull-right"></i>
                                 @else
                                     <i class="tio-flag-cross-1 text-danger pull-right"></i>

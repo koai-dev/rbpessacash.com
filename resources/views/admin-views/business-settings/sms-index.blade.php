@@ -18,8 +18,8 @@
         </div>
         <!-- End Page Header -->
 
-        <div class="row" style="padding-bottom: 20px">
-            <div class="col-md-6">
+        <div class="row __badge-break" style="padding-bottom: 20px">
+            <div class="col-md-6 mb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('twilio_sms')}}</h5>
@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6 mb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('nexmo_sms')}}</h5>
@@ -137,7 +137,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6 mt-4">
+            <div class="col-md-6 mb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('2factor_sms')}}</h5>
@@ -176,7 +176,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6 mt-4">
+            <div class="col-md-6 mb-4">
                 <div class="card">
                     <div class="card-body" style="padding: 20px">
                         <h5 class="text-center">{{translate('msg91_sms')}}</h5>

@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.3|^8.2",
         "ext-json": "*",
         "brian2694/laravel-toastr": "^5.56",
         "doctrine/dbal": "^3.3",
@@ -25,12 +25,15 @@
         "mercadopago/dx-php": "2.4.4",
         "nexmo/laravel": "^2.4",
         "paypal/rest-api-sdk-php": "^1.14",
-        "rap2hpoutre/fast-excel": "^4.1",
+        "ramsey/uuid": "^4.2",
+        "rap2hpoutre/fast-excel": "*",
         "razorpay/razorpay": "^2.8",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "stevebauman/location": "^6.5",
         "stripe/stripe-php": "^7.103",
         "twilio/sdk": "^6.31",
-        "unicodeveloper/laravel-paystack": "^1.0"
+        "unicodeveloper/laravel-paystack": "^1.0",
+        "ext-mysqli": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

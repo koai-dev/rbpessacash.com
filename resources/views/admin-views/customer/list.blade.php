@@ -11,15 +11,13 @@
     <div class="content container-fluid">
         <!-- Page Header -->
         <div class="page-header">
-            <div class="row align-items-center mb-3">
-                <div class="col-sm flex-between">
-                    <h1 class="page-header-title"><i
-                            class="tio-user-add"></i> {{translate('customers')}}
-                    </h1>
-                    <a href="{{route('admin.customer.add')}}" class="btn btn-primary pull-right mr-1"><i
-                            class="tio-add-circle"></i> {{translate('Add')}} {{translate('Customer')}}
-                    </a>
-                </div>
+            <div class="__wrap-gap-10 justify-content-between d-flex align-items-center">
+                <h1 class="page-header-title"><i
+                        class="tio-user-add"></i> {{translate('customers')}}
+                </h1>
+                <a href="{{route('admin.customer.add')}}" class="btn btn-primary pull-right mr-1"><i
+                        class="tio-add-circle"></i> {{translate('Add')}} {{translate('Customer')}}
+                </a>
             </div>
             <!-- End Row -->
         </div>
@@ -28,7 +26,7 @@
         <!-- Card -->
         <div class="card">
             <!-- Header -->
-            <div class="card-header">
+            <div class="card-header __wrap-gap-10">
                 <div class="flex-start">
                     <h5 class="card-header-title">{{translate('Customer Table')}}</h5>
                     <h5 class="card-header-title text-primary mx-1">({{ $customers->total() }})</h5>

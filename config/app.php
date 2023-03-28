@@ -177,6 +177,7 @@ return [
         \App\Providers\ConfigServiceProvider::class,
         \Laravel\Passport\PassportServiceProvider::class,
         Laravelpkg\Laravelchk\LaravelchkServiceProvider::class,
+        Stevebauman\Location\LocationServiceProvider::class,
 
     ],
 
@@ -234,6 +235,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Helpers' => \App\CentralLogics\helpers::class,
+        'Location' => 'Stevebauman\Location\Facades\Location',
 
     ],
 

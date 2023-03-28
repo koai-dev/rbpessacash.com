@@ -27,7 +27,7 @@
                 <form action="{{route('admin.purpose.store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-sm-6">
                             <div class="form-group lang_form">
                                 <label class="input-label"
                                        for="exampleFormControlInput1">{{ translate('name') }}</label>
@@ -35,7 +35,7 @@
                                        placeholder="{{translate('New Title')}}" required>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-sm-6">
                             <div class="form-group lang_form">
                                 <label class="input-label"
                                        for="exampleFormControlInput1">{{ translate('color') }}<small
@@ -71,7 +71,7 @@
 
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2 mt-2">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header __wrap-gap-10">
                         <div class="flex-start">
                             <h5 class="card-header-title">{{translate('Purpose Table')}}</h5>
                             <h5 class="card-header-title text-primary mx-1">({{ $purposes->total() }})</h5>

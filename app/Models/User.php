@@ -24,6 +24,7 @@ class User extends Authenticatable
     protected $casts = [
         'f_name' => 'string',
         'l_name' => 'string',
+        'dial_country_code' => 'string',
         'phone' => 'string',
         'email' => 'string',
         'image' => 'string',
@@ -53,6 +54,10 @@ class User extends Authenticatable
     {
         return $query->where('type', '=', 2);
     }
+    public function scopeMerchantUser($query)
+    {
+        return $query->where('type', '=', 3);
+    }
 
     public function scopeOfType($query, $user_type)
     {
@@ -67,5 +72,10 @@ class User extends Authenticatable
     public function user_log_histories()
     {
         return $this->hasMany(UserLogHistory::class, 'user_id', 'id');
+    }
+
+    public function merchant()
+    {
+        return $this->hasOne(Merchant::class, 'user_id', 'id');
     }
 }

@@ -78,9 +78,10 @@ class LoginController extends Controller
         }
 
 
-        if (auth('user')->attempt(['phone' => $request->phone, 'password' => $request->password], $request->remember)) {
+        if (auth('user')->attempt(['phone' => $request->phone, 'password' => $request->password, 'type' => ADMIN_TYPE], $request->remember)) {
             return redirect()->route('admin.dashboard');
         }
+
 
         return redirect()->back()->withInput($request->only('email', 'remember'))
             ->withErrors(['Credentials does not match.']);

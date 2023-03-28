@@ -15,7 +15,7 @@
                 <div class="col-sm mb-2 mb-sm-0 flex-between">
                     <h1 class="page-header-title">{{translate('Withdrawal Method Add')}}
                         <i class="tio-info" data-toggle="tooltip" data-placement="top"
-                           title="{{translate('Agent/Customer will use these methods to withdraw their money directly from admin')}}">
+                           title="{{translate('Agent/Customer/Merchant will use these methods to withdraw their money directly from admin')}}">
                         </i>
                     </h1>
                     <h1><i class="tio-add-circle-outlined"></i></h1>
@@ -120,8 +120,8 @@
                     event.preventDefault();
 
                     $('#method-field').append(
-                        `<div class="row bg-light" id="field-row--${count}">
-                            <div class="col-md-4 col-12">
+                        `<div class="row" id="field-row--${count}">
+                            <div class="col-sm-6 col-lg-4 col-12">
                                 <div class="form-group">
                                     <label class="input-label">{{translate('Input Field Type')}} </label>
                                     <select class="form-control" name="field_type[]" id="field_type_${count}" required onchange="fieldTypeChange(${count})">
@@ -134,22 +134,22 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-12">
+                            <div class="col-sm-6 col-lg-4 col-12">
                                 <div class="form-group">
                                     <label class="input-label">{{translate('Input Field Name')}} </label>
                                     <input type="text" name="field_name[]" class="form-control" maxlength="255" placeholder="" id="field_name_${count}" required>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-12">
+                            <div class="col-lg-3 col-10">
                                 <div class="form-group">
                                     <label class="input-label">{{translate('Input Field Placeholder/Hints')}} </label>
                                     <input type="text" name="placeholder[]" class="form-control" maxlength="255" placeholder="" required>
                                 </div>
                             </div>
-                            <div class="col-1 p-1"
+                            <div class="col-2 col-sm-1"
                                  data-toggle="tooltip" data-placement="top" title="{{translate('Remove the input field')}}">
-                                <div class="btn form-control mt-4" onclick="delete_input_field(${count})">
-                                    <i class="tio-delete-outlined"></i>
+                                <div class="py-3 mt-4" onclick="delete_input_field(${count})">
+                                    <i class="tio-delete-outlined text-danger"></i>
                                 </div>
                             </div>
                         </div>`

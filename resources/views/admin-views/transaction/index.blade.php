@@ -16,18 +16,41 @@
                     <h1><i class="tio-user-switch"></i></h1>
                 </div>
             </div>
+            <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom gap-3">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link {{$trx_type=='all'?'active':''}}"
+                           href="{{url()->current()}}?trx_type=all">
+                            {{translate('all')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{$trx_type=='debit'?'active':''}}"
+                           href="{{url()->current()}}?trx_type=debit">
+                            {{translate('debit')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{$trx_type=='credit'?'active':''}}"
+                           href="{{url()->current()}}?trx_type=credit">
+                            {{translate('credit')}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+
         <!-- End Page Header -->
         <div class="row gx-2 gx-lg-3">
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <div class="card">
-                    <div class="card-header flex-between">
+                    <div class="card-header flex-between __wrap-gap-10">
                         <div class="flex-start">
                             <h5 class="card-header-title">{{translate('transaction Table')}}</h5>
                             <h5 class="card-header-title text-primary mx-1">({{ $transactions->total() }})</h5>
                         </div>
                         <div>
-                            <form action="{{url()->current()}}" method="GET">
+                            <form action="{{url()->current()}}" method="get">
                                 <div class="input-group">
                                     <input id="datatableSearch_" type="search" name="search"
                                            class="form-control"
@@ -67,7 +90,7 @@
                                     <td>
                                         @php($sender_info = Helpers::get_user_info($transaction['from_user_id']))
                                         @if($sender_info != null)
-                                            <a href="{{route('admin.customer.view',[$transaction['to_user_id']])}}">
+                                            <a href="{{route('admin.customer.view',[$transaction['from_user_id']])}}">
                                                 {{ $sender_info->f_name ?? '' }} {{ $sender_info->phone ?? ''}}
                                             </a>
                                         @else

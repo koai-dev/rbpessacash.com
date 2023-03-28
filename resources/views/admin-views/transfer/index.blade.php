@@ -64,7 +64,7 @@
                             <div class="form-group">
                                 <label class="input-label"
                                        for="exampleFormControlInput1">{{translate('Amount')}}</label>
-                                <input type="number" name="amount" class="form-control" min="1" max="{{$unused_balance}}"
+                                <input type="number" name="amount" step="any" class="form-control" min="1" max="{{$unused_balance}}"
                                        placeholder="{{translate('Ex : 9999')}}"
                                        required>
                                 @if($unused_balance > 0)
@@ -76,14 +76,13 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit"
-                            class="btn btn-primary">{{translate('Transfer')}}</button>
+                    <button type="submit" class="btn btn-primary">{{translate('Transfer')}}</button>
                 </form>
             </div>
 
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2 mt-2">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header __wrap-gap-10">
                         <div class="flex-start">
                             <h5 class="card-header-title">{{translate('Transfer Table')}}</h5>
                             <h5 class="card-header-title text-primary mx-1">({{ $transfers->total() }})</h5>
