@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Nov 10, 2022 at 04:12 AM
+-- Generation Time: Jan 24, 2023 at 12:54 PM
 -- Server version: 5.7.34
 -- PHP Version: 8.0.8
 
@@ -103,7 +103,11 @@ INSERT INTO `business_settings` (`id`, `key`, `value`, `created_at`, `updated_at
 (44, 'mercadopago', '{\"status\":\"0\",\"public_key\":\"\",\"access_token\":\"\"}', NULL, NULL),
 (45, 'flutterwave', '{\"status\":\"0\",\"public_key\":\"\",\"secret_key\":\"\",\"hash\":\"\"}', NULL, NULL),
 (46, 'senang_pay', '{\"status\":\"0\",\"secret_key\":\"\",\"merchant_id\":\"\"}', '2022-04-16 08:05:57', '2022-04-16 08:17:12'),
-(47, 'app_theme', '1', NULL, NULL);
+(47, 'app_theme', '1', NULL, NULL),
+(48, 'payment_otp_verification', '1', NULL, NULL),
+(49, 'hotline_number', '134679', NULL, NULL),
+(50, 'merchant_commission_percent', '10', NULL, NULL),
+(51, 'payment', '{\"status\":1,\"message\":\"payment done successfully.\"}', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -257,6 +261,7 @@ CREATE TABLE `e_money` (
   `user_id` bigint(20) NOT NULL,
   `current_balance` double(14,2) NOT NULL DEFAULT '0.00',
   `charge_earned` double(14,2) NOT NULL DEFAULT '0.00',
+  `pending_balance` double NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -339,6 +344,27 @@ INSERT INTO `linked_websites` (`id`, `name`, `image`, `url`, `status`, `created_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `merchants`
+--
+
+CREATE TABLE `merchants` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `store_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `callback` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bin` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `public_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `secret_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `merchant_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -391,7 +417,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (276, '2022_10_16_063545_create_withdrawal_methods_table', 7),
 (277, '2022_10_18_040302_create_withdraw_requests_table', 7),
 (278, '2022_10_18_141838_create_user_log_histories_table', 7),
-(279, '2022_11_08_055006_change_default_kyc_status', 7);
+(279, '2022_11_08_055006_change_default_kyc_status', 7),
+(280, '2022_12_08_045549_create_merchants_table', 8),
+(281, '2022_12_11_050638_create_payment_records_table', 8),
+(282, '2022_12_21_041139_add_column_dail_country_code_to_users_table', 8),
+(283, '2022_12_26_122524_add_expired_at_column_in_payment_records_table', 8),
+(284, '2023_01_23_065548_add_pending_balance_in_e_money_table', 8);
 
 -- --------------------------------------------------------
 
@@ -522,6 +553,25 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `payment_records`
+--
+
+CREATE TABLE `payment_records` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `merchant_user_id` bigint(20) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `transaction_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` double(14,2) NOT NULL DEFAULT '0.00',
+  `callback` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_paid` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0=unpaid, 1=paid',
+  `expired_at` datetime DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `personal_access_tokens`
 --
 
@@ -646,6 +696,7 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `f_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `l_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dial_country_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -778,6 +829,12 @@ ALTER TABLE `linked_websites`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `merchants`
+--
+ALTER TABLE `merchants`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -828,6 +885,12 @@ ALTER TABLE `oauth_refresh_tokens`
 --
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_phone_index` (`phone`);
+
+--
+-- Indexes for table `payment_records`
+--
+ALTER TABLE `payment_records`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `personal_access_tokens`
@@ -911,7 +974,7 @@ ALTER TABLE `banners`
 -- AUTO_INCREMENT for table `business_settings`
 --
 ALTER TABLE `business_settings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `currencies`
@@ -950,10 +1013,16 @@ ALTER TABLE `linked_websites`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `merchants`
+--
+ALTER TABLE `merchants`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=280;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=285;
 
 --
 -- AUTO_INCREMENT for table `notifications`
